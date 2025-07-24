@@ -1,0 +1,41 @@
+[package]
+name = "docker-imgs2ql"
+version = "0.1.0"
+edition = "2024"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "forbid"
+
+[dependencies.rs-docker-images2ql]
+path = "../../.."
+
+[dependencies.axum]
+version = "0.8.4"
+default-features = false
+features = [
+	"http1",
+	"json",
+	"matched-path",
+	"original-uri",
+	"query",
+	"tokio",
+	"tower-log",
+]
+
+
+[dependencies.async-graphql-axum]
+version = "7.0.17"
+default-features = false
+features = [
+]
+
+[dependencies.tokio]
+version = "1.46.1"
+default-features = false
+features = [
+	"macros",
+	"rt-multi-thread",
+]

@@ -1,0 +1,90 @@
+type ImgSummary {
+	id: String!
+	parentId: String!
+	repoTags: [String!]!
+	repoDigests: [String!]!
+	created: Int!
+	size: Int!
+	sharedSize: Int!
+	virtualSize: Int
+	labels: JSONObject!
+	containers: Int!
+	manifests: [ManifestSummary!]
+	descriptor: Od
+}
+
+"""
+A scalar that can represent any JSON Object value.
+"""
+scalar JSONObject
+
+type ManifestSummary {
+	id: String!
+	descriptor: Od!
+	available: Boolean!
+	size: ManifestSummarySize!
+	kind: ManifestSummaryKind
+	imageData: ManifestSummaryImageData
+	attestationData: ManifestSummaryAttestationData
+}
+
+type ManifestSummaryAttestationData {
+	for: String!
+}
+
+type ManifestSummaryImageData {
+	platform: Op!
+	containers: [String!]!
+	size: ManifestSummaryImageDataSize!
+}
+
+type ManifestSummaryImageDataSize {
+	unpacked: Int!
+}
+
+enum ManifestSummaryKind {
+	EMPTY
+	IMAGE
+	ATTESTATION
+	UNKNOWN
+}
+
+type ManifestSummarySize {
+	total: Int!
+	content: Int!
+}
+
+type Od {
+	mediaType: String
+	digest: String
+	size: Int
+	urls: [String!]
+	annotations: JSONObject
+	data: String
+	platform: Op
+	artifactType: String
+}
+
+type Op {
+	architecture: String
+	os: String
+	osVersion: String
+	osFeatures: [String!]
+	variant: String
+}
+
+type Query {
+	images(sizeGt: Int, containersGtZero: Boolean): [ImgSummary!]!
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+schema {
+	query: Query
+}
